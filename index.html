@@ -464,6 +464,8 @@ input,textarea{font:inherit;color:inherit}
 .field label{position:absolute;left:17px;top:17px;color:var(--dim);font-size:1rem;pointer-events:none;transform-origin:left top;transition:transform .2s var(--ease),color .2s}
 .field input:focus,.field textarea:focus{border-color:rgba(61,220,132,.6);box-shadow:0 0 0 4px rgba(61,220,132,.12);background:rgba(255,255,255,.04)}
 .field input:focus + label,.field input:not(:placeholder-shown) + label,.field textarea:focus + label,.field textarea:not(:placeholder-shown) + label{transform:translateY(-10px) scale(.76);color:var(--green)}
+.field input:user-invalid,.field textarea:user-invalid{border-color:rgba(255,107,107,.85);box-shadow:0 0 0 4px rgba(255,107,107,.12);background:rgba(255,107,107,.03)}
+.field input:user-valid:not(:placeholder-shown),.field textarea:user-valid:not(:placeholder-shown){border-color:rgba(61,220,132,.65)}
 .field.bad input,.field.bad textarea{border-color:rgba(255,107,107,.75);box-shadow:0 0 0 4px rgba(255,107,107,.1)}
 .field .err{display:block;margin-top:6px;color:#ff8f8f;font-size:.8rem}
 .field .count{position:absolute;right:14px;bottom:10px;font:500 .72rem var(--mono);color:var(--dim);pointer-events:none}
@@ -531,6 +533,49 @@ input,textarea{font:inherit;color:inherit}
 .m-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
 .modal-x{position:absolute;top:16px;right:16px;z-index:2;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid var(--line-2);color:var(--muted);transition:color .25s,background .25s,transform .3s var(--ease)}
 .modal-x:hover{color:var(--text);background:rgba(255,255,255,.1);transform:rotate(90deg)}
+
+/* ---------- live TOTP demo (Buffer Authenticator) ---------- */
+.m-totp-box{margin:22px 0 16px;padding:18px 22px;border-radius:18px;background:rgba(61,220,132,.04);border:1px solid rgba(61,220,132,.22)}
+.m-totp-hdr{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;margin-bottom:12px}
+.m-totp-lbl{display:flex;align-items:center;gap:7px;font-weight:600;color:var(--green)}
+.m-totp-sec{color:var(--dim);font-family:var(--mono);font-size:.75rem}
+.m-totp-body{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.m-totp-code{font:700 clamp(1.9rem,3vw,2.4rem)/1 var(--mono);letter-spacing:.12em;color:#fff;text-shadow:0 0 16px rgba(61,220,132,.35)}
+.m-totp-timer{position:relative;width:46px;height:46px;display:grid;place-items:center;flex:none}
+.m-totp-ring{width:100%;height:100%;transform:rotate(-90deg)}
+.m-totp-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:3.2}
+.m-totp-fg{fill:none;stroke:var(--green);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:88;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .3s}
+.m-totp-timer span{position:absolute;font:600 .75rem var(--mono);color:var(--muted)}
+.m-totp-ft{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted)}
+.m-totp-ft code{color:var(--text);background:rgba(255,255,255,.05);padding:2px 7px;border-radius:6px;font-family:var(--mono)}
+.btn-xs{padding:4px 11px;font-size:.78rem;border-radius:8px}
+
+/* ---------- command palette ---------- */
+.cmd-trigger{display:inline-flex;align-items:center;gap:6px;font:500 .82rem var(--mono);padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);transition:all .2s var(--ease);cursor:pointer}
+.cmd-trigger:hover{color:var(--text);border-color:var(--line-2);background:rgba(255,255,255,.08)}
+.cmd-trigger kbd{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:6px;font-size:.72rem;border:1px solid var(--line)}
+dialog.cmd-palette{position:fixed;inset:0;z-index:140;padding:clamp(16px,4vw,40px);margin:auto;border:0;background:transparent;width:min(640px,94vw);max-height:85vh;overflow:visible;overscroll-behavior:contain}
+dialog.cmd-palette::backdrop{background:rgba(3,7,13,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden;overscroll-behavior:contain}
+.cmd-panel{position:relative;background:#0a0e14;border:1px solid var(--line-2);border-radius:20px;box-shadow:0 35px 100px -20px rgba(0,0,0,.9);overflow:hidden;display:flex;flex-direction:column;max-height:min(72vh,680px)}
+.cmd-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.cmd-search-icon{width:18px;height:18px;color:var(--green);flex:none}
+.cmd-head input{flex:1;background:transparent;border:0;outline:0;color:var(--text);font:400 1rem var(--font)}
+.cmd-head input::placeholder{color:var(--dim)}
+.cmd-esc{font:500 .7rem var(--mono);color:var(--dim);background:rgba(255,255,255,.05);border:1px solid var(--line);padding:2px 6px;border-radius:5px}
+.cmd-results{overflow-y:auto;padding:10px 8px;max-height:460px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+.cmd-group{padding:8px 12px 4px;font:600 .68rem var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--dim)}
+.cmd-item{display:flex;align-items:center;gap:12px;width:100%;padding:10px 14px;border-radius:12px;color:var(--text);font-size:.92rem;text-align:left;cursor:pointer;border:1px solid transparent;background:transparent;transition:background .15s,border-color .15s}
+.cmd-item:hover,.cmd-item.active{background:rgba(255,255,255,.06);border-color:var(--line);color:#fff}
+.cmd-item .i,.cmd-item .si{width:16px;height:16px;color:var(--muted);flex:none}
+.cmd-item.active .i,.cmd-item.active .si{color:var(--green)}
+.cmd-item .cmd-text{flex:1;display:flex;flex-direction:column}
+.cmd-item .cmd-title{font-weight:500}
+.cmd-item .cmd-desc{font-size:.78rem;color:var(--muted)}
+.cmd-item .cmd-badge{font:500 .7rem var(--mono);color:var(--dim);background:rgba(255,255,255,.04);border:1px solid var(--line);padding:2px 6px;border-radius:6px}
+.cmd-empty{padding:28px 20px;text-align:center;color:var(--muted);font-size:.9rem}
+.cmd-foot{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:10px 18px;border-top:1px solid var(--line);font:500 .72rem var(--mono);color:var(--dim);background:rgba(255,255,255,.015)}
+.cmd-foot span{display:inline-flex;align-items:center;gap:4px}
+.cmd-foot kbd{background:rgba(255,255,255,.06);border:1px solid var(--line);padding:1px 5px;border-radius:4px;color:var(--muted)}
 
 /* ---------- toasts, back-to-top ---------- */
 .toasts{position:fixed;left:50%;bottom:24px;z-index:150;transform:translateX(-50%);display:grid;gap:8px;justify-items:center;pointer-events:none;width:max-content;max-width:92vw}
@@ -708,6 +753,7 @@ input,textarea{font:inherit;color:inherit}
   .step-dot{margin:0}
 }
 @media (max-width:600px){
+  .cmd-trigger span{display:none}
   .hero-title{font-size:clamp(2.1rem,10.4vw,2.75rem)}
   .grid{grid-template-columns:minmax(0,1fr)}
   .row2{grid-template-columns:1fr;gap:0}
@@ -789,6 +835,7 @@ input,textarea{font:inherit;color:inherit}
       </ul>
     </nav>
     <div class="nav-right">
+      <button class="cmd-trigger" id="cmd-trigger" type="button" aria-label="Search or jump (Ctrl+K)"><kbd>⌘K</kbd><span>Search</span></button>
       <a href="#contact" class="btn btn-primary btn-sm magnetic">Hire me <svg class="i go"><use href="#i-arrow-right"/></svg></a>
       <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
     </div>
@@ -898,10 +945,12 @@ input,textarea{font:inherit;color:inherit}
       </div>
     </div>
 
+    <div class="stats" data-reveal>
       <div class="stat"><div class="stat-num grad"><span data-count="12">12</span></div><p>Public repositories on GitHub — apps, tools &amp; experiments</p></div>
       <div class="stat"><div class="stat-num grad"><span data-count="3">3</span><span class="u">langs</span></div><p>Dart, Kotlin &amp; Python are where I do most of my work</p></div>
       <div class="stat"><div class="stat-num grad"><span data-count="5">5</span><span class="u">+ yrs</span></div><p>Tinkering with Android, from modding to shipping apps</p></div>
       <div class="stat"><div class="stat-num grad"><span data-count="0" data-from="99">0</span></div><p>Trackers in anything I build</p></div>
+    </div>
   </div>
 </section>
 
@@ -1294,6 +1343,7 @@ input,textarea{font:inherit;color:inherit}
     </div>
     <div class="m-body">
       <p id="m-overview"></p>
+      <div class="m-live-demo" id="m-live-demo" hidden></div>
       <h4>Highlights</h4>
       <ul class="m-list" id="m-list"></ul>
       <h4 id="m-stack-h">Built with</h4>
@@ -1302,6 +1352,23 @@ input,textarea{font:inherit;color:inherit}
     </div>
   </div>
 </div>
+
+<!-- ============ command palette ============ -->
+<dialog class="cmd-palette" id="cmd-palette" aria-label="Command Palette">
+  <div class="cmd-panel" role="dialog" aria-modal="true" aria-label="Search portfolio">
+    <div class="cmd-head">
+      <svg class="i cmd-search-icon"><use href="#i-search"/></svg>
+      <input type="text" id="cmd-input" placeholder="Type a command or search projects..." autocomplete="off" spellcheck="false" aria-autocomplete="list">
+      <kbd class="cmd-esc" data-cmd-close>ESC</kbd>
+    </div>
+    <div class="cmd-results" id="cmd-results" role="listbox"></div>
+    <div class="cmd-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span>
+      <span><kbd>↵</kbd> Select</span>
+      <span><kbd>ESC</kbd> Close</span>
+    </div>
+  </div>
+</dialog>
 
 <div class="toasts" id="toasts" aria-live="polite"></div>
 <button class="to-top" id="to-top" type="button" aria-label="Back to top"><svg class="ring2" viewBox="0 0 54 54" aria-hidden="true"><circle class="bgc" cx="27" cy="27" r="25"/><circle class="fgc" cx="27" cy="27" r="25"/></svg><svg class="i"><use href="#i-arrow-up"/></svg></button>
@@ -1898,6 +1965,12 @@ function renderProjects() {
 function filters() {
   const wrap = $('#filters'); if (!wrap) return;
   const btns = $$('button', wrap), pill = $('.filter-pill', wrap);
+  // sync filter badges with actual project data
+  btns.forEach(b => {
+    const f = b.dataset.filter, span = b.querySelector('.n');
+    if (!span) return;
+    span.textContent = f === 'all' ? PROJECTS.length : PROJECTS.filter(p => p.cat.split(' ').indexOf(f) > -1).length;
+  });
   const place = b => { if (!b) return; pill.style.width = b.offsetWidth + 'px'; pill.style.transform = 'translateX(' + b.offsetLeft + 'px)'; };
   const apply = cat => {
     const items = $$('#work [data-cat]');
@@ -1933,6 +2006,37 @@ function filters() {
   addEventListener('resize', () => place(current()));
 }
 
+let totpTimer = null;
+function startTotpDemo() {
+  clearInterval(totpTimer);
+  const tick = () => {
+    const now = Date.now();
+    const sec = 30 - (Math.floor(now / 1000) % 30);
+    const step = Math.floor(now / 30000);
+    let h = 0, seed = 'likhsout-totp-' + step;
+    for (let i = 0; i < seed.length; i++) h = ((h << 5) - h + seed.charCodeAt(i)) | 0;
+    const raw = String(Math.abs(h) % 900000 + 100000);
+    const code = raw.slice(0, 3) + ' ' + raw.slice(3);
+    const val = $('#live-totp-val'), s = $('#live-totp-sec'), c = $('#live-totp-circle');
+    if (val) val.textContent = code;
+    if (s) s.textContent = sec + 's';
+    if (c) {
+      c.style.strokeDashoffset = (88 * (1 - sec / 30)).toFixed(1);
+      c.style.stroke = sec <= 5 ? '#f87171' : (sec <= 10 ? '#fbbf24' : '#3ddc84');
+    }
+  };
+  tick();
+  totpTimer = setInterval(tick, 1000);
+  const btn = $('#copy-totp-demo');
+  if (btn) btn.onclick = () => {
+    const v = ($('#live-totp-val')?.textContent || '').replace(/\s+/g, '');
+    if (v) copyText(v).then(ok => { if (ok) toast('2FA Code ' + v + ' copied!'); });
+  };
+}
+function stopTotpDemo() {
+  clearInterval(totpTimer);
+}
+
 function modal() {
   const m = $('#modal'), panel = $('.modal-panel', m);
   let last = null, closeTimer = 0;
@@ -1954,6 +2058,25 @@ function modal() {
     $('#m-stack').innerHTML = p.stack.map(s => '<li>' + esc(s) + '</li>').join('');
     if ($('#m-stack-h')) $('#m-stack-h').textContent = p.stackLabel || 'Built with';
     $('#m-links').innerHTML = p.links.map((l, i) => '<a class="btn btn-sm ' + (i ? 'btn-ghost' : 'btn-primary') + '" href="' + l.href + '" target="_blank" rel="noopener">' + (l.icon ? icon(l.icon) : '') + esc(l.label) + '</a>').join('');
+    const liveDemo = $('#m-live-demo');
+    if (liveDemo) {
+      if (p.id === 'authenticator') {
+        liveDemo.hidden = false;
+        liveDemo.innerHTML = '<div class="m-totp-box">' +
+          '<div class="m-totp-hdr"><span class="m-totp-lbl">' + icon('i-shield-check') + 'Live RFC 6238 TOTP Simulator</span><span class="m-totp-sec">100% Offline · SHA-256</span></div>' +
+          '<div class="m-totp-body">' +
+            '<div class="m-totp-code" id="live-totp-val">--- ---</div>' +
+            '<div class="m-totp-timer"><svg viewBox="0 0 36 36" class="m-totp-ring"><circle cx="18" cy="18" r="14" class="m-totp-bg"/><circle cx="18" cy="18" r="14" class="m-totp-fg" id="live-totp-circle"/></svg><span id="live-totp-sec">30s</span></div>' +
+          '</div>' +
+          '<div class="m-totp-ft"><span>Account: <code>likhon@diu.edu.bd</code></span><button type="button" class="btn btn-ghost btn-xs" id="copy-totp-demo">Copy Code</button></div>' +
+        '</div>';
+        startTotpDemo();
+      } else {
+        liveDemo.hidden = true;
+        liveDemo.innerHTML = '';
+        stopTotpDemo();
+      }
+    }
     if (m.hidden) { m.hidden = false; lockScroll(true); }
     panel.scrollTop = 0;
     requestAnimationFrame(() => requestAnimationFrame(() => m.classList.add('open')));
@@ -1961,6 +2084,7 @@ function modal() {
   };
   const close = () => {
     if (m.hidden || !m.classList.contains('open')) return;
+    stopTotpDemo();
     m.classList.remove('open');
     lockScroll(false);
     closeTimer = setTimeout(() => { m.hidden = true; }, 380);
@@ -1982,6 +2106,128 @@ function modal() {
     if (btn) { openModal(btn.dataset.case, btn); return; }
     const card = e.target.closest('[data-open]');
     if (card && !e.target.closest('a,button')) openModal(card.dataset.open, card.querySelector('[data-case]') || card);
+  });
+}
+
+function commandPalette() {
+  const dlg = $('#cmd-palette'), inp = $('#cmd-input'), list = $('#cmd-results'), trigger = $('#cmd-trigger');
+  if (!dlg || !inp || !list) return;
+
+  const ITEMS = [
+    { type: 'Navigation', title: 'Home', desc: 'Back to top / introduction', icon: 'i-arrow-up', action: () => go('#home') },
+    { type: 'Navigation', title: 'About Me', desc: 'Background & core philosophy', icon: 'i-zap', action: () => go('#about') },
+    { type: 'Navigation', title: 'Services', desc: 'What I can build for you', icon: 'i-briefcase', action: () => go('#services') },
+    { type: 'Navigation', title: 'Automation & Data', desc: 'Python scripts & data pipelines', icon: 'i-code-xml', action: () => go('#automation') },
+    { type: 'Navigation', title: 'Selected Work', desc: 'Featured apps & tools portfolio', icon: 'i-sparkles', action: () => go('#work') },
+    { type: 'Navigation', title: 'Process', desc: 'How we will work together', icon: 'i-check', action: () => go('#process') },
+    { type: 'Navigation', title: 'Contact', desc: 'Send me a direct message', icon: 'i-send', action: () => go('#contact') },
+    
+    { type: 'Projects', title: 'DIU Campus Schedule', desc: 'Flagship campus Android app (5K+ downloads)', icon: 'si-googleplay', action: () => openModal('diu') },
+    { type: 'Projects', title: 'Material Privacy Browser', desc: 'Ultra-lightweight Kotlin privacy browser', icon: 'si-android', action: () => openModal('browser') },
+    { type: 'Projects', title: 'Watcher', desc: 'Flutter movie & series tracker with cloud backup', icon: 'si-flutter', action: () => openModal('watcher') },
+    { type: 'Projects', title: 'CashBook', desc: 'Offline-first personal finance & debt tracker', icon: 'si-flutter', action: () => openModal('cashbook') },
+    { type: 'Projects', title: 'RetailSync', desc: 'Bangladeshi super-shop warehouse platform', icon: 'i-globe', action: () => openModal('retailsync') },
+    { type: 'Projects', title: 'Buffer Authenticator', desc: '100% offline encrypted 2FA browser extension', icon: 'i-shield-check', action: () => openModal('authenticator') },
+    { type: 'Projects', title: 'T-Block Origin', desc: 'Declarative Manifest V3 ad-blocker', icon: 'i-shield-check', action: () => openModal('tblock') },
+    { type: 'Projects', title: 'DIU Routine Scrapper', desc: 'Excel schedule parser to structured JSON', icon: 'si-python', action: () => openModal('routine') },
+
+    { type: 'Actions', title: 'Copy Email Address', desc: EMAIL, icon: 'i-copy', action: () => { copyText(EMAIL).then(ok => { if (ok) toast('Email copied to clipboard!'); }); } },
+    { type: 'Actions', title: 'Open GitHub Profile', desc: 'github.com/likhsout', icon: 'si-github', action: () => { window.open('https://github.com/likhsout', '_blank', 'noopener'); } },
+    { type: 'Actions', title: 'Google Play Store', desc: 'NeoTechDev studio apps', icon: 'si-googleplay', action: () => { window.open('https://play.google.com/store/apps/details?id=com.om.diucampusschedule', '_blank', 'noopener'); } }
+  ];
+
+  let selectedIndex = 0;
+  let filtered = [...ITEMS];
+
+  const go = sel => {
+    const el = $(sel);
+    if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  };
+
+  const render = () => {
+    if (!filtered.length) {
+      list.innerHTML = '<div class="cmd-empty">No results found for "' + esc(inp.value) + '"</div>';
+      return;
+    }
+    let html = '', currentGroup = '';
+    filtered.forEach((it, idx) => {
+      if (it.type !== currentGroup) {
+        currentGroup = it.type;
+        html += '<div class="cmd-group">' + esc(currentGroup) + '</div>';
+      }
+      const active = idx === selectedIndex ? ' active' : '';
+      html += '<div class="cmd-item' + active + '" role="option" data-idx="' + idx + '" aria-selected="' + (idx === selectedIndex) + '">' +
+        icon(it.icon) +
+        '<div class="cmd-text"><span class="cmd-title">' + esc(it.title) + '</span><span class="cmd-desc">' + esc(it.desc) + '</span></div>' +
+        '<span class="cmd-badge">' + esc(it.type) + '</span>' +
+      '</div>';
+    });
+    list.innerHTML = html;
+    const activeEl = list.querySelector('.cmd-item.active');
+    if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
+  };
+
+  const open = () => {
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    else dlg.setAttribute('open', '');
+    inp.value = '';
+    filtered = [...ITEMS];
+    selectedIndex = 0;
+    render();
+    setTimeout(() => inp.focus(), 50);
+  };
+
+  const close = () => {
+    if (typeof dlg.close === 'function') dlg.close();
+    else dlg.removeAttribute('open');
+  };
+
+  const execute = idx => {
+    const it = filtered[idx];
+    if (it) {
+      close();
+      it.action();
+    }
+  };
+
+  if (trigger) trigger.addEventListener('click', open);
+  dlg.addEventListener('click', e => { if (e.target.closest('[data-cmd-close]') || e.target === dlg) close(); });
+
+  list.addEventListener('click', e => {
+    const item = e.target.closest('.cmd-item');
+    if (item) execute(Number(item.dataset.idx));
+  });
+
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim().toLowerCase();
+    filtered = ITEMS.filter(it => it.title.toLowerCase().includes(q) || it.desc.toLowerCase().includes(q) || it.type.toLowerCase().includes(q));
+    selectedIndex = 0;
+    render();
+  });
+
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex + 1) % Math.max(1, filtered.length);
+      render();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex - 1 + filtered.length) % Math.max(1, filtered.length);
+      render();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filtered.length) execute(selectedIndex);
+    } else if (e.key === 'Escape') {
+      close();
+    }
+  });
+
+  window.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (dlg.open) close();
+      else open();
+    }
   });
 }
 
@@ -2461,6 +2707,14 @@ safe('campaign', campaign);
 safe('konami', konami);
 safe('year', () => { $('#year').textContent = new Date().getFullYear(); });
 safe('particles', particles);
+safe('cmd', commandPalette);
+const syncAria = el => {
+  if (el && el.matches && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+    el.setAttribute('aria-invalid', el.matches(':user-invalid') ? 'true' : 'false');
+  }
+};
+document.addEventListener('blur', e => syncAria(e.target), true);
+document.addEventListener('input', e => { if (e.target && e.target.hasAttribute && e.target.hasAttribute('aria-invalid')) syncAria(e.target); });
 boot(() => { document.body.classList.add('ready'); safe('hero', heroIntro); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => dispatchEvent(new Event('resize')));
 window.__pfOK = true;
