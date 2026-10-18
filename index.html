@@ -551,9 +551,9 @@ input,textarea{font:inherit;color:inherit}
 .btn-xs{padding:4px 11px;font-size:.78rem;border-radius:8px}
 
 /* ---------- command palette ---------- */
-.cmd-trigger{display:inline-flex;align-items:center;gap:6px;font:500 .82rem var(--mono);padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);transition:all .2s var(--ease);cursor:pointer}
-.cmd-trigger:hover{color:var(--text);border-color:var(--line-2);background:rgba(255,255,255,.08)}
-.cmd-trigger kbd{background:rgba(255,255,255,.08);padding:2px 6px;border-radius:6px;font-size:.72rem;border:1px solid var(--line)}
+.cmd-trigger{display:inline-grid;place-items:center;width:40px;height:40px;padding:0;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);transition:all .2s var(--ease);cursor:pointer}
+.cmd-trigger:hover{color:var(--green);border-color:rgba(61,220,132,.35);background:rgba(61,220,132,.08);box-shadow:0 0 16px -4px rgba(61,220,132,.25)}
+.cmd-trigger .i{width:18px;height:18px}
 dialog.cmd-palette{position:fixed;inset:0;z-index:140;padding:clamp(16px,4vw,40px);margin:auto;border:0;background:transparent;width:min(640px,94vw);max-height:85vh;overflow:visible;overscroll-behavior:contain}
 dialog.cmd-palette::backdrop{background:rgba(3,7,13,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden;overscroll-behavior:contain}
 .cmd-panel{position:relative;background:#0a0e14;border:1px solid var(--line-2);border-radius:20px;box-shadow:0 35px 100px -20px rgba(0,0,0,.9);overflow:hidden;display:flex;flex-direction:column;max-height:min(72vh,680px)}
@@ -753,7 +753,6 @@ dialog.cmd-palette::backdrop{background:rgba(3,7,13,.78);backdrop-filter:blur(14
   .step-dot{margin:0}
 }
 @media (max-width:600px){
-  .cmd-trigger span{display:none}
   .hero-title{font-size:clamp(2.1rem,10.4vw,2.75rem)}
   .grid{grid-template-columns:minmax(0,1fr)}
   .row2{grid-template-columns:1fr;gap:0}
@@ -835,7 +834,7 @@ dialog.cmd-palette::backdrop{background:rgba(3,7,13,.78);backdrop-filter:blur(14
       </ul>
     </nav>
     <div class="nav-right">
-      <button class="cmd-trigger" id="cmd-trigger" type="button" aria-label="Search or jump (Ctrl+K)"><kbd>⌘K</kbd><span>Search</span></button>
+      <button class="cmd-trigger" id="cmd-trigger" type="button" aria-label="Search or jump (⌘K)" title="Search (⌘K)"><svg class="i"><use href="#i-search"/></svg></button>
       <a href="#contact" class="btn btn-primary btn-sm magnetic">Hire me <svg class="i go"><use href="#i-arrow-right"/></svg></a>
       <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
     </div>
